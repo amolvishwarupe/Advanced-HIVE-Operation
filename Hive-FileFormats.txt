@@ -1,0 +1,387 @@
+Apche Hive FilFormats Assignment.
+
+1,Amol,Bangalore,10,2000
+2,Sachin, Mumbai,10,3000
+3,Rahul,Bangalore,20,4000
+4,Saurav,Calcutta,20,6000
+5,MSD,Ranchi,30,7000
+6,Rohit,Mumbai,30,8000
+7,Shikhar,Pune,40,9000
+8,Hardik,Chennai,40,10000
+
+create table emp(empid INT,empname STRING, empplace STRING,dept INT,salary INT) row format delimited fields terminated by ',' stored as textfile;
+
+load data local inpath '/home/acadgild/hive/emp.txt' into table emp;
+
+
+create table emp_sequencefile(empid INT,empname STRING, empplace STRING,dept INT,salary INT) row format delimited fields terminated by '\t' stored as sequencefile;
+
+INSERT OVERWRITE TABLE emp_sequencefile SELECT * FROM emp;
+
+select * from emp_sequencefile;
+
+create table emp_rcfile(empid INT,empname STRING, empplace STRING,dept INT,salary INT) row format delimited fields terminated by '\t' stored as rcfile ;
+
+INSERT OVERWRITE TABLE emp_rcfile SELECT * FROM emp;
+
+create table emp_orcfile(empid INT,empname STRING, empplace STRING,dept INT,salary INT) row format delimited fields terminated by '\t' stored as orcfile
+
+INSERT OVERWRITE TABLE emp_orcfile SELECT * FROM emp;
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+login as: acadgild
+acadgild@127.0.0.1's password:
+Last login: Sun Aug  7 08:45:27 2016 from 10.0.2.2
+[acadgild@localhost ~]$ jps
+3571 ResourceManager
+3237 DataNode
+3142 NameNode
+3672 NodeManager
+3433 SecondaryNameNode
+4223 Jps
+[acadgild@localhost ~]$ sudo service mysqld start
+[sudo] password for acadgild:
+Starting mysqld:                                           [  OK  ]
+[acadgild@localhost ~]$ jps
+3571 ResourceManager
+3237 DataNode
+3142 NameNode
+4407 Jps
+3672 NodeManager
+3433 SecondaryNameNode
+[acadgild@localhost ~]$ cd hive
+[acadgild@localhost hive]$ ls -l
+total 135272
+-rw-rw-r--. 1 acadgild acadgild 69234933 Jul 22 05:44 crime.csv
+-rw-rw-r--. 1 acadgild acadgild 69234933 Jul 22 05:34 Crimes_-_2001_to_present.csv
+drwxrwxr-x. 2 acadgild acadgild     4096 Jun 30 08:53 emp_details
+-rw-rw-r--. 1 acadgild acadgild      159 Jun 20 07:43 emp_details.txt
+-rw-rw-r--. 1 acadgild acadgild      195 Jul  3 07:58 emp.txt
+-rw-rw-r--. 1 acadgild acadgild    26661 Jul 22 07:22 pig_1469146704283.log
+[acadgild@localhost hive]$ cat  emp.txt
+1,Amol,Bangalore,10,2000
+2,Sachin, Mumbai,10,3000
+3,Rahul,Bangalore,20,4000
+4,Saurav,Calcutta,20,6000
+5,MSD,Ranchi,30,7000
+6,Rohit,Mumbai,30,8000
+7,Shikhar,Pune,40,9000
+8,Hardik,Chennai,40,10000
+[acadgild@localhost hive]$ clear
+[acadgild@localhost hive]$ hive
+
+Logging initialized using configuration in jar:file:/usr/local/hive/lib/hive-common-0.14.0.jar!/hive-log4j.properties
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/hive/lib/hive-jdbc-0.14.0-standalone.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop-2.6.0/share/hadoop/common/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+hive> show tables;
+Error rolling back: Can't call rollback when autocommit=true
+OK
+college
+emp
+emp_details
+emp_details_orc
+emp_details_partitioned
+employee_hbase
+employee_hbase1
+first
+Time taken: 0.93 seconds, Fetched: 8 row(s)
+hive> drop table emp;
+OK
+Time taken: 0.905 seconds
+hive> show tables;
+OK
+college
+emp_details
+emp_details_orc
+emp_details_partitioned
+employee_hbase
+employee_hbase1
+first
+Time taken: 0.064 seconds, Fetched: 7 row(s)
+hive> clear
+    > ;
+NoViableAltException(26@[])
+        at org.apache.hadoop.hive.ql.parse.HiveParser.statement(HiveParser.java:1015)
+        at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:199)
+        at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:166)
+        at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:389)
+        at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:303)
+        at org.apache.hadoop.hive.ql.Driver.compileInternal(Driver.java:1067)
+        at org.apache.hadoop.hive.ql.Driver.runInternal(Driver.java:1129)
+        at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1004)
+        at org.apache.hadoop.hive.ql.Driver.run(Driver.java:994)
+        at org.apache.hadoop.hive.cli.CliDriver.processLocalCmd(CliDriver.java:247)
+        at org.apache.hadoop.hive.cli.CliDriver.processCmd(CliDriver.java:199)
+        at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:410)
+        at org.apache.hadoop.hive.cli.CliDriver.executeDriver(CliDriver.java:783)
+        at org.apache.hadoop.hive.cli.CliDriver.run(CliDriver.java:677)
+        at org.apache.hadoop.hive.cli.CliDriver.main(CliDriver.java:616)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.lang.reflect.Method.invoke(Method.java:497)
+        at org.apache.hadoop.util.RunJar.run(RunJar.java:221)
+        at org.apache.hadoop.util.RunJar.main(RunJar.java:136)
+FAILED: ParseException line 1:0 cannot recognize input near 'clear' '<EOF>' '<EOF>'
+hive> cls
+    > ;
+NoViableAltException(26@[])
+        at org.apache.hadoop.hive.ql.parse.HiveParser.statement(HiveParser.java:1015)
+        at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:199)
+        at org.apache.hadoop.hive.ql.parse.ParseDriver.parse(ParseDriver.java:166)
+        at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:389)
+        at org.apache.hadoop.hive.ql.Driver.compile(Driver.java:303)
+        at org.apache.hadoop.hive.ql.Driver.compileInternal(Driver.java:1067)
+        at org.apache.hadoop.hive.ql.Driver.runInternal(Driver.java:1129)
+        at org.apache.hadoop.hive.ql.Driver.run(Driver.java:1004)
+        at org.apache.hadoop.hive.ql.Driver.run(Driver.java:994)
+        at org.apache.hadoop.hive.cli.CliDriver.processLocalCmd(CliDriver.java:247)
+        at org.apache.hadoop.hive.cli.CliDriver.processCmd(CliDriver.java:199)
+        at org.apache.hadoop.hive.cli.CliDriver.processLine(CliDriver.java:410)
+        at org.apache.hadoop.hive.cli.CliDriver.executeDriver(CliDriver.java:783)
+        at org.apache.hadoop.hive.cli.CliDriver.run(CliDriver.java:677)
+        at org.apache.hadoop.hive.cli.CliDriver.main(CliDriver.java:616)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.lang.reflect.Method.invoke(Method.java:497)
+        at org.apache.hadoop.util.RunJar.run(RunJar.java:221)
+        at org.apache.hadoop.util.RunJar.main(RunJar.java:136)
+FAILED: ParseException line 1:0 cannot recognize input near 'cls' '<EOF>' '<EOF>'
+hive>
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    >
+    > [acadgild@localhost hive]$ clear
+[acadgild@localhost hive]$ hive
+
+Logging initialized using configuration in jar:file:/usr/local/hive/lib/hive-common-0.14.0.jar!/hive-log4j.properties
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/hive/lib/hive-jdbc-0.14.0-standalone.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop-2.6.0/share/hadoop/common/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+hive> create table emp(empid INT,empname STRING, empplace STRING,dept INT,salary INT) row format delimited fields terminated by ',' stored as textfile;
+Error rolling back: Can't call rollback when autocommit=true
+OK
+Time taken: 1.192 seconds
+hive> describe emp;
+OK
+empid                   int
+empname                 string
+empplace                string
+dept                    int
+salary                  int
+Time taken: 0.349 seconds, Fetched: 5 row(s)
+hive> load data local inpath '/home/acadgild/hive/emp.txt' into table emp;
+Loading data to table default.emp
+Table default.emp stats: [numFiles=1, totalSize=195]
+OK
+Time taken: 1.662 seconds
+hive> select * from emp;
+OK
+1       Amol    Bangalore       10      2000
+2       Sachin   Mumbai 10      3000
+3       Rahul   Bangalore       20      4000
+4       Saurav  Calcutta        20      6000
+5       MSD     Ranchi  30      7000
+6       Rohit   Mumbai  30      8000
+7       Shikhar Pune    40      9000
+8       Hardik  Chennai 40      10000
+Time taken: 0.496 seconds, Fetched: 8 row(s)
+hive> select salary from emp;
+OK
+2000
+3000
+4000
+6000
+7000
+8000
+9000
+10000
+Time taken: 0.145 seconds, Fetched: 8 row(s)
+hive> create table emp_sequencefile(empid INT,empname STRING, empplace STRING,dept INT,salary INT) row format delimited fields terminated by '\t' stored as sequencefile;
+OK
+Time taken: 0.118 seconds
+hive> describe emp_sequencefile;
+OK
+empid                   int
+empname                 string
+empplace                string
+dept                    int
+salary                  int
+Time taken: 0.231 seconds, Fetched: 5 row(s)
+hive>
+    > INSERT OVERWRITE TABLE emp_sequencefile SELECT * FROM emp;
+Query ID = acadgild_20160807091010_961bbe07-a1c7-4404-abbb-681c5495d422
+Total jobs = 3
+Launching Job 1 out of 3
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1470540234542_0001, Tracking URL = http://localhost:8088/proxy/application_1470540234542_0001/
+Kill Command = /home/acadgild/hadoop-2.6.0/bin/hadoop job  -kill job_1470540234542_0001
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-08-07 09:10:59,765 Stage-1 map = 0%,  reduce = 0%
+2016-08-07 09:11:10,519 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.29 sec
+MapReduce Total cumulative CPU time: 1 seconds 290 msec
+Ended Job = job_1470540234542_0001
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:9000/tmp/hive/acadgild/59bcb8f4-f1a5-4fe4-9f01-336b0d12c4f7/hive_2016-08-07_09-10-38_799_1716557701946554623-1/-ext-10000
+Loading data to table default.emp_sequencefile
+Table default.emp_sequencefile stats: [numFiles=1, numRows=8, totalSize=378, rawDataSize=187]
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1   Cumulative CPU: 1.29 sec   HDFS Read: 402 HDFS Write: 459 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 290 msec
+OK
+Time taken: 33.865 seconds
+hive> select * from emp_sequencefile;
+OK
+1       Amol    Bangalore       10      2000
+2       Sachin   Mumbai 10      3000
+3       Rahul   Bangalore       20      4000
+4       Saurav  Calcutta        20      6000
+5       MSD     Ranchi  30      7000
+6       Rohit   Mumbai  30      8000
+7       Shikhar Pune    40      9000
+8       Hardik  Chennai 40      10000
+Time taken: 0.17 seconds, Fetched: 8 row(s)
+hive> create table emp_rcfile(empid INT,empname STRING, empplace STRING,dept INT,salary INT) row format delimited fields terminated by '\t' stored as rcfile ;
+OK
+Time taken: 0.11 seconds
+hive> select * from emp_rcfile;
+OK
+Time taken: 0.118 seconds
+hive> describe emp_rcfile;
+OK
+empid                   int
+empname                 string
+empplace                string
+dept                    int
+salary                  int
+Time taken: 0.214 seconds, Fetched: 5 row(s)
+hive> INSERT OVERWRITE TABLE emp_rcfile SELECT * FROM emp;
+Query ID = acadgild_20160807091414_5aa10bdd-7be0-4e47-91bc-2603ac0c656e
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1470540234542_0002, Tracking URL = http://localhost:8088/proxy/application_1470540234542_0002/
+Kill Command = /home/acadgild/hadoop-2.6.0/bin/hadoop job  -kill job_1470540234542_0002
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-08-07 09:14:23,548 Stage-1 map = 0%,  reduce = 0%
+2016-08-07 09:14:33,978 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.33 sec
+MapReduce Total cumulative CPU time: 1 seconds 330 msec
+Ended Job = job_1470540234542_0002
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:9000/tmp/hive/acadgild/59bcb8f4-f1a5-4fe4-9f01-336b0d12c4f7/hive_2016-08-07_09-14-12_514_5490111376569612110-1/-ext-10000
+Loading data to table default.emp_rcfile
+Table default.emp_rcfile stats: [numFiles=1, numRows=8, totalSize=244, rawDataSize=138]
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1   Cumulative CPU: 1.33 sec   HDFS Read: 402 HDFS Write: 319 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 330 msec
+OK
+Time taken: 24.237 seconds
+hive> select * from emp_rcfile;
+OK
+1       Amol    Bangalore       10      2000
+2       Sachin   Mumbai 10      3000
+3       Rahul   Bangalore       20      4000
+4       Saurav  Calcutta        20      6000
+5       MSD     Ranchi  30      7000
+6       Rohit   Mumbai  30      8000
+7       Shikhar Pune    40      9000
+8       Hardik  Chennai 40      10000
+Time taken: 0.097 seconds, Fetched: 8 row(s)
+hive> select empname , salary from emp_rcfile;
+OK
+Amol    2000
+Sachin  3000
+Rahul   4000
+Saurav  6000
+MSD     7000
+Rohit   8000
+Shikhar 9000
+Hardik  10000
+Time taken: 0.103 seconds, Fetched: 8 row(s)
+hive> create table emp_orcfile(empid INT,empname STRING, empplace STRING,dept INT,salary INT) row format delimited fields terminated by '\t' stored as orcfile;
+OK
+Time taken: 0.152 seconds
+hive> describe  emp_orcfile;
+OK
+empid                   int
+empname                 string
+empplace                string
+dept                    int
+salary                  int
+Time taken: 0.18 seconds, Fetched: 5 row(s)
+hive>                                                                                                                                                > INSERT OVERWRITE TABLE emp_orcfile SELECT * FROM emp;
+Query ID = acadgild_20160807091818_0dce5f27-d465-4a62-95fb-20fa9cc306e9
+Total jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks is set to 0 since there's no reduce operator
+Starting Job = job_1470540234542_0003, Tracking URL = http://localhost:8088/proxy/application_1470540234542_0003/
+Kill Command = /home/acadgild/hadoop-2.6.0/bin/hadoop job  -kill job_1470540234542_0003
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 0
+2016-08-07 09:18:38,843 Stage-1 map = 0%,  reduce = 0%
+2016-08-07 09:18:47,726 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.48 sec
+MapReduce Total cumulative CPU time: 1 seconds 480 msec
+Ended Job = job_1470540234542_0003
+Stage-4 is selected by condition resolver.
+Stage-3 is filtered out by condition resolver.
+Stage-5 is filtered out by condition resolver.
+Moving data to: hdfs://localhost:9000/tmp/hive/acadgild/59bcb8f4-f1a5-4fe4-9f01-336b0d12c4f7/hive_2016-08-07_09-18-28_286_6601444538537899771-1/-ext-10000
+Loading data to table default.emp_orcfile
+Table default.emp_orcfile stats: [numFiles=1, numRows=8, totalSize=664, rawDataSize=1536]
+MapReduce Jobs Launched:
+Stage-Stage-1: Map: 1   Cumulative CPU: 1.48 sec   HDFS Read: 402 HDFS Write: 741 SUCCESS
+Total MapReduce CPU Time Spent: 1 seconds 480 msec
+OK
+Time taken: 22.344 seconds
+hive> select * from emp_orcfile;
+OK
+1       Amol    Bangalore       10      2000
+2       Sachin   Mumbai 10      3000
+3       Rahul   Bangalore       20      4000
+4       Saurav  Calcutta        20      6000
+5       MSD     Ranchi  30      7000
+6       Rohit   Mumbai  30      8000
+7       Shikhar Pune    40      9000
+8       Hardik  Chennai 40      10000
+Time taken: 0.099 seconds, Fetched: 8 row(s)
+hive>
+
+
